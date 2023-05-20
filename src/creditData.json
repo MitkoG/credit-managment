@@ -1,0 +1,21 @@
+[
+    {
+      "id": 1,
+      "name": "Ivan Ivanov",
+      "amount": 5000,
+      "term": 6
+    },
+    {
+      "id": 2,
+      "name": "Petar Petrov",
+      "amount": 10000,
+      "term": 12
+    },
+    {
+      "id": 3,
+      "name": "Gospodin Gospodinov",
+      "amount": 15000,
+      "term": 9
+    }
+  ]
+  

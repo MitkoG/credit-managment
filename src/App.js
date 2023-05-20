@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import CreditsList from './components/CreditsList';
 import NewLoan from './components/NewLoan';
 import PaymentForm from './components/PaymentForm';
 import AlertUser from './components/AlertUser';
+import creditData from './creditData.json';
 
 function App() {
   const [credits, setCredits] = useState([]);
@@ -14,6 +15,10 @@ function App() {
     moneyToReturn: 0,
   });
 
+  useEffect(() => {
+    setCredits(creditData);
+  }, []);
+  
   const addNewLoan = (newLoan) => {
     const newCredit = { ...newLoan, id: Date.now() };
     setCredits([...credits, newCredit]);
