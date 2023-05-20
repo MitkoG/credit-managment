@@ -16,7 +16,7 @@ function App() {
     <div className="App">
       <h2>Credit Management</h2>
       <NewLoan addNewLoan={addNewLoan}/>
-      <CreditsList />
+      <CreditsList credits={credits} />
       <PaymentForm />
     </div>
   );

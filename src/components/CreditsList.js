@@ -1,11 +1,29 @@
-import React from 'react'
+import React from 'react';
+import '../styles/CreditsList.css';
 
-function CreditsList() {
+function CreditsList({ credits }) {
   return (
-    <div>
-      CreditsList
-    </div>
-  )
+    <table className="credits-table">
+      <thead>
+        <tr>
+          <th className="table-header">Name</th>
+          <th className="table-header">Amount (BGN)</th>
+          <th className="table-header">Term (months)</th>
+          <th className="table-header">Credit ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        {credits.map((credit) => (
+          <tr key={credit.id} className="table-row">
+            <td>{credit.name}</td>
+            <td>{credit.amount}</td>
+            <td>{credit.term}</td>
+            <td>{credit.id}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 }
 
 export default React.memo(CreditsList)
