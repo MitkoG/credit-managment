@@ -20,6 +20,13 @@ function App() {
   }, []);
   
   const addNewLoan = (newLoan) => {
+    const borrowerLoans = credits.filter((credit) => credit.name === newLoan.name)
+    const totalLoans = borrowerLoans.reduce((total, credit) => total + credit.amount, 0) + newLoan.amount
+
+    if (totalLoans > 80000) {
+      alert('User cannot borrow more than 80000 BGN');
+      return;
+    }
     const newCredit = { ...newLoan, id: Date.now() };
     setCredits([...credits, newCredit]);
   };
