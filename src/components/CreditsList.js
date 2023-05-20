@@ -10,7 +10,6 @@ function CreditsList({ credits }) {
           <th className="table-header">Amount (BGN)</th>
           <th className="table-header">Term (months)</th>
           <th className="table-header">Monthly Installment (BGN)</th>
-          {/* <th className="table-header">Credit ID</th> */}
         </tr>
       </thead>
       <tbody>
@@ -20,7 +19,6 @@ function CreditsList({ credits }) {
             <td>{credit.amount}</td>
             <td>{credit.term}</td>
             <td>{credit.amount / credit.term}</td>
-            {/* <td>{credit.id}</td> */}
           </tr>
         ))}
       </tbody>

@@ -1,13 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-function PaymentForm({credits}) {
+function PaymentForm({ credits, makePayment }) {
   const [selectedCredit, setSelectedCredit] = useState('');
   const [amount, setAmount] = useState('');
 
   const handleSubmit = (e) => {
-   //TODO submit payment
-   e.preventDefault();
-   console.log('SUBMIT');
+    e.preventDefault();
+    const payment = {
+      creditId: selectedCredit,
+      amount: parseFloat(amount),
+    };
+    makePayment(payment);
+    setSelectedCredit('');
+    setAmount('');
   };
 
   return (
@@ -37,9 +42,11 @@ function PaymentForm({credits}) {
           required
         />
       </div>
-      <button type="submit" className="btn">Make Payment</button>
+      <button type="submit" className="btn">
+        Make Payment
+      </button>
     </form>
-  )
+  );
 }
 
-export default React.memo(PaymentForm)
+export default React.memo(PaymentForm);
