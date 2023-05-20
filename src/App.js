@@ -24,7 +24,7 @@ function App() {
     const totalLoans = borrowerLoans.reduce((total, credit) => total + credit.amount, 0) + newLoan.amount
 
     if (totalLoans > 80000) {
-      alert('User cannot borrow more than 80000 BGN');
+      alert(`${newLoan.name} cannot borrow more than 80000 BGN`);
       return;
     }
     const newCredit = { ...newLoan, id: Date.now() };
