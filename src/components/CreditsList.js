@@ -8,4 +8,4 @@ function CreditsList() {
   )
 }
 
-export default CreditsList
+export default React.memo(CreditsList)

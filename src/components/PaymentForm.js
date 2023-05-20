@@ -8,4 +8,4 @@ function PaymentForm() {
   )
 }
 
-export default PaymentForm
+export default React.memo(PaymentForm)
