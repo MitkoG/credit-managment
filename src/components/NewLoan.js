@@ -2,32 +2,32 @@ import React, { useState } from 'react';
 import '../styles/NewLoan.css';
 
 const NewLoanForm = ({ addNewLoan }) => {
-  const [loanName, setLoanName] = useState('');
-  const [loanAmount, setLoanAmount] = useState('');
-  const [loanTerm, setLoanTerm] = useState('');
-  
+  const [name, setName] = useState('');
+  const [amount, setAmount] = useState('');
+  const [term, setTerm] = useState('');
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const newLoan = {
-      loanName,
-      loanAmount: parseFloat(loanAmount),
-      loanTerm: parseInt(loanTerm),
+      name,
+      amount: parseFloat(amount),
+      term: parseInt(term),
     };
     addNewLoan(newLoan);
-    setLoanName('');
-    setLoanAmount('');
-    setLoanTerm('');
+    setName('');
+    setAmount('');
+    setTerm('');
   };
 
   return (
     <form onSubmit={handleSubmit} className="loan-form">
-      <h3>New Loan</h3>
+      <h2>New Loan</h2>
       <div className="form-group">
-        <label>Name:</label>
+        <label>Borrower Name:</label>
         <input
           type="text"
-          value={loanName}
-          onChange={(e) => setLoanName(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           required
           className="input"
         />
@@ -36,8 +36,8 @@ const NewLoanForm = ({ addNewLoan }) => {
         <label>Amount (BGN):</label>
         <input
           type="number"
-          value={loanAmount}
-          onChange={(e) => setLoanAmount(e.target.value)}
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
           required
           className="input"
         />
@@ -46,8 +46,8 @@ const NewLoanForm = ({ addNewLoan }) => {
         <label>Term (months):</label>
         <input
           type="number"
-          value={loanTerm}
-          onChange={(e) => setLoanTerm(e.target.value)}
+          value={term}
+          onChange={(e) => setTerm(e.target.value)}
           min="1"
           max="12"
           required
@@ -59,4 +59,4 @@ const NewLoanForm = ({ addNewLoan }) => {
   );
 };
 
-export default React.memo(NewLoanForm)
+export default NewLoanForm;
