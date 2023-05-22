@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { addDoc } from 'firebase/firestore';
+import { loansCollection } from '../firebase';
 import '../styles/NewLoan.css';
 
 const NewLoanForm = ({ addNewLoan }) => {
@@ -6,17 +8,25 @@ const NewLoanForm = ({ addNewLoan }) => {
   const [amount, setAmount] = useState('');
   const [term, setTerm] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const newLoan = {
       name,
       amount: parseFloat(amount),
       term: parseInt(term),
     };
-    addNewLoan(newLoan);
-    setName('');
-    setAmount('');
-    setTerm('');
+
+    try {
+      const docRef = await addDoc(loansCollection, newLoan);
+      const loanWithId = { ...newLoan, id: docRef.id };
+      addNewLoan(loanWithId);
+      setName('');
+      setAmount('');
+      setTerm('');
+      console.log('Loan added successfully');
+    } catch (error) {
+      console.error('Error adding loan: ', error);
+    }
   };
 
   return (
@@ -54,7 +64,9 @@ const NewLoanForm = ({ addNewLoan }) => {
           className="input"
         />
       </div>
-      <button type="submit" className="button">Create Loan</button>
+      <button type="submit" className="button" disabled={name === '' || amount === '' || term === ''}>
+        Create Loan
+      </button>
     </form>
   );
 };

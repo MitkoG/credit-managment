@@ -1,31 +1,50 @@
 import React, { useState } from 'react';
+import { doc, collection, addDoc, updateDoc, getDoc, runTransaction } from 'firebase/firestore';
+import { db } from '../firebase';
 
-function PaymentForm({ credits, makePayment }) {
-  const [selectedCredit, setSelectedCredit] = useState('');
+const PaymentForm = ({ credits, makePayment }) => {
+  const [creditId, setCreditId] = useState('');
   const [amount, setAmount] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+  
     const payment = {
-      creditId: selectedCredit,
+      creditId,
       amount: parseFloat(amount),
     };
-    makePayment(payment);
-    setSelectedCredit('');
-    setAmount('');
+  
+    try {
+      const loanRef = doc(db, 'loans', creditId);
+  
+      await runTransaction(db, async (transaction) => {
+        const loanDoc = await transaction.get(loanRef);
+        const currentLoanAmount = loanDoc.data().amount;
+  
+        const updatedLoanAmount = currentLoanAmount - payment.amount;
+  
+        transaction.update(loanRef, { amount: updatedLoanAmount });
+      });
+  
+      await addDoc(collection(loanRef, 'payments'), payment);
+  
+      makePayment(payment);
+      setCreditId('');
+      setAmount('');
+      console.log('Payment added successfully');
+    } catch (error) {
+      console.error('Error adding payment: ', error);
+    }
   };
+  
 
   return (
-    <form onSubmit={handleSubmit} className="form">
+    <form onSubmit={handleSubmit}>
       <h2>Make Payment</h2>
-      <div className="form-group">
-        <label>Select Credit:</label>
-        <select
-          value={selectedCredit}
-          onChange={(e) => setSelectedCredit(e.target.value)}
-          required
-        >
-          <option value="">Select</option>
+      <div>
+        <label>Loan:</label>
+        <select value={creditId} onChange={(e) => setCreditId(e.target.value)}>
+          <option value="">Select a loan</option>
           {credits.map((credit) => (
             <option key={credit.id} value={credit.id}>
               {credit.name}
@@ -33,20 +52,13 @@ function PaymentForm({ credits, makePayment }) {
           ))}
         </select>
       </div>
-      <div className="form-group">
-        <label>Amount (BGN):</label>
-        <input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          required
-        />
+      <div>
+        <label>Payment Amount (BGN):</label>
+        <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} required />
       </div>
-      <button type="submit" className="btn">
-        Make Payment
-      </button>
+      <button type="submit">Submit Payment</button>
     </form>
   );
-}
+};
 
-export default React.memo(PaymentForm);
+export default PaymentForm;
